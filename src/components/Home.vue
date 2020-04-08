@@ -41,7 +41,7 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       def: '',
       folds: false,
@@ -56,26 +56,25 @@ export default {
     }
   },
   methods: {
-    logout() {
+    logout () {
       window.sessionStorage.clear('token')
       this.$router.push('/login')
     },
     //     获取左侧菜单方法
-    async getmenuslist() {
+    async getmenuslist () {
       const res = await this.axios.get('menus')
-      if (res.data.meta.status !== 200)
-        return this.$message.error('获取数据失败')
+      if (res.data.meta.status !== 200) { return this.$message.error('获取数据失败') }
       this.menuslists = res.data.data
     },
     //     折叠导航栏
-    fold() {
+    fold () {
       this.folds = !this.folds
     },
-    defact(el) {
+    defact (el) {
       window.sessionStorage.setItem('def', el.index)
     }
   },
-  created() {
+  created () {
     this.getmenuslist()
     this.def = sessionStorage.getItem('def')
   }
