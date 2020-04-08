@@ -1,28 +1,35 @@
 <template>
-
   <el-container>
     <el-header>
-      <img src="../assets/img/heima.png" alt="">
+      <img src="../assets/img/logo.png" alt />
       <h1>电商后台管理系统</h1>
       <el-button class="button" @click="logout">退出登陆</el-button>
     </el-header>
     <el-container>
       <el-aside :width=" !folds ? '250px':'56px'">
         <div class="foldbutton" @click="fold">|||</div>
-        <el-menu background-color="#303641" text-color="#fff" active-text-color="#319aff" unique-opened
-          :collapse='folds' :collapse-transition='false' :router="true" :default-active='def'>
+        <el-menu
+          background-color="#303641"
+          text-color="#fff"
+          active-text-color="#319aff"
+          unique-opened
+          :collapse="folds"
+          :collapse-transition="false"
+          :router="true"
+          :default-active="def"
+        >
           <el-submenu :index="item.order+''" class="aaa" v-for="item in menuslists" :key="item.id">
             <template slot="title">
               <i :class="icons[item.id]"></i>
               <span>{{item.authName}}</span>
             </template>
             <el-menu-item-group v-for="items in item.children" :key="items.id">
-              <el-menu-item @click="defact" :index="'/'+items.path"><i
-                  class="el-icon-menu"></i><span>{{items.authName}}</span>
+              <el-menu-item @click="defact" :index="'/'+items.path">
+                <i class="el-icon-menu"></i>
+                <span>{{items.authName}}</span>
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-
         </el-menu>
       </el-aside>
       <el-main>
@@ -31,11 +38,10 @@
       </el-main>
     </el-container>
   </el-container>
-
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
       def: '',
       folds: false,
@@ -50,25 +56,26 @@ export default {
     }
   },
   methods: {
-    logout () {
+    logout() {
       window.sessionStorage.clear('token')
       this.$router.push('/login')
     },
     //     获取左侧菜单方法
-    async getmenuslist () {
+    async getmenuslist() {
       const res = await this.axios.get('menus')
-      if (res.data.meta.status !== 200) return this.$message.error('获取数据失败')
+      if (res.data.meta.status !== 200)
+        return this.$message.error('获取数据失败')
       this.menuslists = res.data.data
     },
     //     折叠导航栏
-    fold () {
+    fold() {
       this.folds = !this.folds
     },
-    defact (el) {
+    defact(el) {
       window.sessionStorage.setItem('def', el.index)
     }
   },
-  created () {
+  created() {
     this.getmenuslist()
     this.def = sessionStorage.getItem('def')
   }
